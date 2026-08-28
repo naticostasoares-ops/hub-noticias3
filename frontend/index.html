@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curadoria RI - Portal de Relações Internacionais</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        .g1-border {
+            border-top: 4px solid #c4170c;
+        }
+        .la-prensa-header {
+            font-family: Georgia, serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-300 shadow-sm g1-border">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight la-prensa-header text-red-700">CURADORIA RI</h1>
+                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Monitoramento Estratégico Global • Atualizado em Tempo Real</p>
+            </div>
+            <div class="mt-4 sm:mt-0 flex space-x-1 border-b border-gray-200" id="tabs">
+                <button onclick="switchTab('hoje')" id="tab-hoje" class="px-5 py-2.5 font-bold text-sm border-b-2 border-red-600 text-red-600 bg-red-50 sm:rounded-t">HOJE</button>
+                <button onclick="switchTab('busca')" id="tab-busca" class="px-5 py-2.5 font-bold text-sm border-b-2 border-transparent text-gray-600 hover:text-red-600 hover:bg-gray-50 sm:rounded-t">BUSCA</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+        <!-- Aba: Hoje -->
+        <section id="section-hoje" class="space-y-6">
+            <!-- Destaque -->
+            <div id="hoje-destaque" class="hidden">
+                <!-- Will be dynamically populated -->
+            </div>
+
+            <!-- Grid de Notícias -->
+            <div class="border-b border-gray-300 pb-2 flex justify-between items-center">
+                <h2 class="text-xl font-extrabold text-gray-800 tracking-tight la-prensa-header">Últimas 48 horas</h2>
+                <span id="hoje-count" class="text-sm bg-gray-200 text-gray-700 font-semibold px-2 py-0.5 rounded-full">0 notícias</span>
+            </div>
+            <div id="hoje-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Will be dynamically populated -->
+            </div>
+            
+            <!-- Mensagem Vazia -->
+            <div id="hoje-empty" class="hidden bg-white border border-gray-300 p-8 text-center text-gray-600 font-medium">
+                Nenhum novo acontecimento registrado nas últimas 48 horas.
+            </div>
+        </section>
+
+        <!-- Aba: Busca -->
+        <section id="section-busca" class="hidden space-y-6">
+            <!-- Filtros -->
+            <div class="bg-white border border-gray-300 p-5 rounded shadow-sm space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Palavra-chave</label>
+                        <input type="text" id="filter-keyword" oninput="applyFilters()" placeholder="Buscar título ou resumo..." class="w-full text-sm border border-gray-300 rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-red-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Assunto</label>
+                        <select id="filter-subject" onchange="applyFilters()" class="w-full text-sm border border-gray-300 rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-red-600">
+                            <option value="">Todos</option>
+                            <option value="Esporte">Esporte</option>
+                            <option value="Economia">Economia</option>
+                            <option value="Justiça">Justiça</option>
+                            <option value="Saúde">Saúde</option>
+                            <option value="Ciência e Tecnologia">Ciência e Tecnologia</option>
+                            <option value="Meio Ambiente">Meio Ambiente</option>
+                            <option value="Trabalho">Trabalho</option>
+                            <option value="Cultura">Cultura</option>
+                            <option value="Entretenimento e Mídia">Entretenimento e Mídia</option>
+                            <option value="Política">Política</option>
+                            <option value="Relações Internacionais">Relações Internacionais</option>
+                            <option value="Defesa e Segurança">Defesa e Segurança</option>
+                            <option value="Indefinido">Indefinido</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Tipo de Texto</label>
+                        <select id="filter-type" onchange="applyFilters()" class="w-full text-sm border border-gray-300 rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-red-600">
+                            <option value="">Todos</option>
+                            <option value="reportagem com apuração própria">Reportagem</option>
+                            <option value="análise assinada">Análise</option>
+                            <option value="artigo de opinião">Artigo de Opinião</option>
+                            <option value="comunicado oficial">Comunicado Oficial</option>
+                            <option value="indefinido">Indefinido</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">País</label>
+                        <select id="filter-country" onchange="applyFilters()" class="w-full text-sm border border-gray-300 rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-red-600">
+                            <option value="">Todos</option>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Veículo</label>
+                        <select id="filter-source" onchange="applyFilters()" class="w-full text-sm border border-gray-300 rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-red-600">
+                            <option value="">Todos</option>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2 border-t border-gray-200">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Data Inicial</label>
+                        <input type="date" id="filter-start-date" onchange="applyFilters()" class="w-full text-sm border border-gray-300 rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-red-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Data Final</label>
+                        <input type="date" id="filter-end-date" onchange="applyFilters()" class="w-full text-sm border border-gray-300 rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-red-600">
+                    </div>
+                    <div class="flex items-end justify-end">
+                        <button onclick="exportToPDF()" class="w-full sm:w-auto bg-red-700 hover:bg-red-800 text-white font-bold text-sm px-5 py-2 rounded shadow-sm flex items-center justify-center space-x-2">
+                            <span>Gerar Relatório PDF</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resultados -->
+            <div class="border-b border-gray-300 pb-2">
+                <h2 class="text-xl font-extrabold text-gray-800 tracking-tight la-prensa-header">Resultados da Busca</h2>
+            </div>
+            <div id="busca-results" class="space-y-4">
+                <!-- Will be dynamically populated -->
+            </div>
+        </section>
+    </main>
+
+    <!-- TTS / Audio Player Widget no canto inferior direito -->
+    <div id="audio-widget" class="fixed bottom-4 right-4 bg-white border border-gray-300 p-4 shadow-xl rounded-lg max-w-sm w-80 z-50">
+        <div class="flex justify-between items-center mb-2">
+            <h3 class="text-xs font-extrabold uppercase text-red-700 tracking-wider flex items-center">
+                <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1.5 animate-pulse"></span>
+                Áudio Resumo do Dia
+            </h3>
+            <button onclick="toggleAudioWidget()" class="text-gray-400 hover:text-gray-600 text-xs font-semibold">Ocultar</button>
+        </div>
+        <audio id="audio-player" src="summary.mp3" controls class="w-full h-8 mt-1.5"></audio>
+        <div class="mt-2 text-[10px] text-gray-500">
+            Resumo narrado das 5 notícias globais mais relevantes.
+        </div>
+    </div>
+
+    <!-- Toggle Button to restore audio widget if closed -->
+    <button id="audio-widget-restore" onclick="toggleAudioWidget()" class="hidden fixed bottom-4 right-4 bg-red-700 hover:bg-red-800 text-white p-3 rounded-full shadow-lg z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+        </svg>
+    </button>
+
+    <footer class="bg-gray-200 border-t border-gray-300 py-6 text-center text-xs text-gray-600">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 Curadoria RI. Distribuição interna exclusiva. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

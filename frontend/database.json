@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Balanço Comercial da China atinge superávit recorde impulsionado por exportações de tecnologia",
+    "sources": [
+      {
+        "name": "China Economic Net",
+        "country": "China",
+        "nature": "veículo estatal",
+        "link": "http://en.ce.cn/main/latest/202608/t20260827_3910291.shtml"
+      },
+      {
+        "name": "Reuters",
+        "country": "Estados Unidos",
+        "nature": "agência de notícias",
+        "link": "https://www.reuters.com/business/china-trade-surplus-record-exports-2026-08-27/"
+      }
+    ],
+    "published_at": "2026-08-27T18:00:00Z",
+    "type": "reportagem com apuração própria",
+    "subject_primary": "Economia",
+    "subjects_secondary": [
+      "Ciência e Tecnologia"
+    ],
+    "relevance_brazil": 4,
+    "relevance_intl": 5,
+    "summary": "As exportações de tecnologia da China impulsionaram a balança comercial do país para um superávit recorde.\nO fluxo comercial com parceiros da América Latina, incluindo o Brasil, cresceu significativamente.\nAnalistas internacionais avaliam que a forte demanda global por semicondutores e painéis solares sustenta essa alta.",
+    "link_valid": true,
+    "link_last_checked": "2026-08-27T21:10:00Z"
+  },
+  {
+    "title": "Declaração Conjunta do G20 sobre Diplomacia Climática e Sustentabilidade",
+    "sources": [
+      {
+        "name": "Casa Branca (Briefings)",
+        "country": "Estados Unidos",
+        "nature": "fonte oficial",
+        "link": "https://www.whitehouse.gov/briefings-statements/g20-joint-declaration-climate-diplomacy/"
+      }
+    ],
+    "published_at": "2026-08-27T14:30:00Z",
+    "type": "comunicado oficial",
+    "subject_primary": "Meio Ambiente",
+    "subjects_secondary": [
+      "Relações Internacionais"
+    ],
+    "relevance_brazil": 5,
+    "relevance_intl": 5,
+    "summary": "Líderes do G20 assinaram uma declaração conjunta comprometendo-se com metas rígidas de sustentabilidade.\nO Brasil desempenhou papel central nas negociações sobre a conservação das florestas tropicais.\nO acordo estabelece mecanismos multilaterais de financiamento para nações em desenvolvimento.",
+    "link_valid": true,
+    "link_last_checked": "2026-08-27T21:10:00Z"
+  },
+  {
+    "title": "Decisão do STF sobre a demarcação de terras e soberania nacional",
+    "sources": [
+      {
+        "name": "Portal do STF",
+        "country": "Brasil",
+        "nature": "fonte oficial",
+        "link": "https://portal.stf.jus.br/noticias/verNoticiaDetalhe.asp?idConteudo=541290"
+      }
+    ],
+    "published_at": "2026-08-26T20:15:00Z",
+    "type": "comunicado oficial",
+    "subject_primary": "Justiça",
+    "subjects_secondary": [
+      "Política"
+    ],
+    "relevance_brazil": 5,
+    "relevance_intl": 3,
+    "summary": "O Supremo Tribunal Federal proferiu julgamento histórico referente ao marco temporal de terras.\nA tese jurídica aprovada equilibra o direito originário e a segurança jurídica de proprietários rurais.\nA decisão possui impacto direto na diplomacia ambiental e na reputação externa do agronegócio brasileiro.",
+    "link_valid": true,
+    "link_last_checked": "2026-08-27T21:10:00Z"
+  }
+]
