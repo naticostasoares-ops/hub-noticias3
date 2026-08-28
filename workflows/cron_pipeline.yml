@@ -1,0 +1,47 @@
+name: News Aggregator Pipeline
+
+on:
+  schedule:
+    # Run every 6 hours (4 times a day)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Enable running manually from GitHub UI
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        persist-credentials: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+
+    - name: Run Scraper and Classifier
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        cd backend
+        python scraper.py
+
+    - name: Run Link Verifier
+      run: |
+        cd backend
+        python verifier.py
+
+    - name: Commit and Push Database Updates
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add frontend/database.json frontend/summary.mp3 frontend/summary.txt
+        # Only commit if there are changes
+        git diff-index --quiet HEAD || (git commit -m "auto: update database and daily summary [skip ci]" && git push)
